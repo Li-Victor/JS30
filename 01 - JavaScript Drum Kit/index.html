@@ -59,6 +59,44 @@
 
 <script>
 
+  //play sound and transition/transform div when a key is pressed down
+  function playSound(keyboardEventListener) {
+    var audioSelector = 'audio[data-key="' + keyboardEventListener.keyCode + '"]';
+
+    //find audio element with a data-key value with correct keyCode
+    var audioSound = document.querySelector(audioSelector);
+
+    //find HTML element with class of key and same data-key
+    var keySelector = '.key[data-key="' + keyboardEventListener.keyCode  + '"]';
+    var key = document.querySelector(keySelector);
+
+    if(!audioSound) return;
+    else {
+      audioSound.currentTime = 0; //does not have to wait for whole sound to play
+      audioSound.play();
+
+      //add css class playing to key
+      key.classList.add('playing');
+    }
+  }
+
+  //remove transition when dsound has ended
+  function removeTransition(transitionEventListener) {
+    if(transitionEventListener.propertyName !== 'transform') return;
+
+    //'this' is key, running from the callback
+    //remove class of playing to the specific key when transition end
+    this.classList.remove('playing');
+  }
+
+  //for all html elements with class key, put a transition end listener
+  var keys = document.querySelectorAll('.key');
+  keys.forEach(function(key) {
+    key.addEventListener('transitionend', removeTransition);
+  });
+
+  window.addEventListener('keydown', playSound);
+
 </script>
 
 
