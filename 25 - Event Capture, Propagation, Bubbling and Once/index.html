@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after { box-sizing: inherit; }
+
+  div {
+    width:100%;
+    padding:100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background:mistyrose;
+  }
+
+  .three {
+    background:coral;
+  }
+</style>
+
+<button>Click me</button>
+<script>
+    var divs = document.querySelectorAll('div');
+    var button = document.querySelector('button');
+
+    function logText(event) {
+        //event.stopPropagation(); //stop bubbling
+        console.log(this.classList.value);
+    }
+
+    divs.forEach(function (div) {
+        div.addEventListener('click', logText, {capture: false, once: true });
+    });
+
+    button.addEventListener('click', function () {
+        console.log('Click!!!');
+    }, {
+        once: true
+    });
+    //capture goes top down
+    //event hasnt fired yet, then it bubbles up and fires the events
+    //default is capture: false
+
+    //with both capture true and stopPropagation, it does the event from the top
+    //and then stops
+
+    //once true meaning to run the eventListener once, same as removing the eventListener
+    //after it has ran
+</script>
+</body>
+</html>
